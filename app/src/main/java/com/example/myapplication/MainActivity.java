@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView textViewWynikRzutu;
     private TextView textViewWynikSumaryczny;
-
+    int sumaWszystkiego = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         obrazyKosci[3] = findViewById(R.id.imageView4);
         obrazyKosci[4] = findViewById(R.id.imageView5);
 
+
         textViewWynikRzutu = findViewById(R.id.textView2);
         textViewWynikSumaryczny = findViewById(R.id.textView3);
         int[] obrazki = new int[]{
@@ -44,14 +45,38 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        int wynikLosowania = 0;
                         int[] rzuty = rzucWszystkimiKoscmi();
                         for (int i = 0; i < obrazyKosci.length; i++) {
                             obrazyKosci[i].setImageResource(obrazki[rzuty[i]]);
+
                         }
+                        int suma = sumaKosc(rzuty);
+                        textViewWynikRzutu.setText("Wynik tego losowania: " + suma);
+                        sumaWszystkiego+=sumaKosc(rzuty);
+                        textViewWynikSumaryczny.setText("Wynik gry: " + sumaWszystkiego);
+                    }
+                }
+        );
+        buttonReset.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        sumaWszystkiego=0;
+                        textViewWynikSumaryczny.setText("Wynik gry: " + sumaWszystkiego);
                     }
                 }
         );
     }
+    private int sumaKosc(int[] rzuty){
+        int s = 0;
+        for (int i = 0; i < rzuty.length; i++) {
+            s = s+rzuty[i];
+        }
+        return s;
+    }
+
+
     private int[] rzucWszystkimiKoscmi(){
         int[] rzuty = new int[5];
         Random random = new Random();
